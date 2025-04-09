@@ -1,66 +1,34 @@
-## Foundry
+# RollupCodes Automation Scripts
 
-**Foundry is a blazing fast, portable and modular toolkit for Ethereum application development written in Rust.**
+This repository includes scripts to test the opcodes, precompiles, and system contracts supported by a rollup.
 
-Foundry consists of:
+## Scripts
 
--   **Forge**: Ethereum testing framework (like Truffle, Hardhat and DappTools).
--   **Cast**: Swiss army knife for interacting with EVM smart contracts, sending transactions and getting chain data.
--   **Anvil**: Local Ethereum node, akin to Ganache, Hardhat Network.
--   **Chisel**: Fast, utilitarian, and verbose solidity REPL.
+### Test Precompiles
 
-## Documentation
+[`test-precompiles.sh`](./test-precompiles.sh) verifies whether the rollup supports all standard Ethereum precompiles as well as the `P256VERIFY` precompile defined in `RIP-7212`.
 
-https://book.getfoundry.sh/
+### Test Cancun
 
-## Usage
+[`test-cancun.sh`](./test-cancun.sh) verifies whether the rollup supports all opcodes from the Cancun upgrade:
+1. `BLOBHASH`
+2. `BLOBBASEFEE`
+3. `TSTORE` / `TLOAD`
+4. `MCOPY`
 
-### Build
+### Test Beacon Root System Contract
 
-```shell
-$ forge build
-```
+[`test-beacon-root-system-contract.sh`](./test-beacon-root-system-contract.sh) verifies whether the rollup supports the [`BeaconRoot`](https://eips.ethereum.org/EIPS/eip-4788) system contract.
 
-### Test
+On Ethereum, the contract stores the last 8191 entries. The script also checks if the buffer is modified by the rollup.
 
-```shell
-$ forge test
-```
+### Test History Storage System Contract
 
-### Format
+[`test-history-storage-system-contract.sh`](./test-history-storage-system-contract.sh) verifies whether the rollup supports the [`HistoryStorage`](https://eips.ethereum.org/EIPS/eip-2935) system contract.
 
-```shell
-$ forge fmt
-```
+On Ethereum, the contract stores the last 8191 entries. The script also checks if the buffer is modified by the rollup. 
 
-### Gas Snapshots
+## Setup
 
-```shell
-$ forge snapshot
-```
+Create a `.env` file that contains `RPC_URL` variable.
 
-### Anvil
-
-```shell
-$ anvil
-```
-
-### Deploy
-
-```shell
-$ forge script script/Counter.s.sol:CounterScript --rpc-url <your_rpc_url> --private-key <your_private_key>
-```
-
-### Cast
-
-```shell
-$ cast <subcommand>
-```
-
-### Help
-
-```shell
-$ forge --help
-$ anvil --help
-$ cast --help
-```
