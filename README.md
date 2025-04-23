@@ -6,7 +6,7 @@ This repository includes scripts to test the opcodes, precompiles, and system co
 
 ### Test Precompiles
 
-[`test-precompiles.sh`](./test-precompiles.sh) verifies whether the rollup supports all standard Ethereum precompiles as well as the `P256VERIFY` precompile defined in `RIP-7212`.
+[`test-precompiles.sh`](./test-precompiles.sh) verifies whether the rollup supports all standard Ethereum precompiles as well as the `P256VERIFY` precompile defined in [`RIP-7212`](https://github.com/ethereum/RIPs/blob/master/RIPS/rip-7212.md).
 
 ### Test Cancun
 
@@ -30,5 +30,5 @@ On Ethereum, the contract stores the last 8191 entries. The script also checks i
 
 ## Setup
 
-Create a `.env` file that contains `RPC_URL` variable.
+Create a `.env` file that contains `RPC_URL` and `BLOCK_NUMBER` variables.
 

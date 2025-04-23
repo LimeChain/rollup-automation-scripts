@@ -3,7 +3,13 @@
 # Load .env file
 set -a && source .env && set +a
 
-last_block=$(cast rpc eth_getBlockByNumber "latest" "false" --rpc-url $RPC_URL)
+if [[ "$BLOCK_NUMBER" == "latest" ]]; then
+  BLOCK_NUMBER_HEX=$BLOCK_NUMBER
+else
+  BLOCK_NUMBER_HEX=$(cast to-hex $BLOCK_NUMBER)
+fi
+
+last_block=$(cast rpc eth_getBlockByNumber $BLOCK_NUMBER_HEX "false" --rpc-url $RPC_URL)
 last_block_number_hex=$(echo $last_block | jq -r .number | sed 's/^0x//' | tr a-z A-Z)
 last_block_timestamp_hex=$(echo $last_block | jq -r .timestamp | sed 's/^0x//' | tr a-z A-Z)
 
@@ -23,7 +29,7 @@ test_beacon_root() {
   echo "getting beacon root for block $block_num_dec with timestamp $timestamp_dec and offset 0x$block_offset"
 
   encodedTimestamp=$(printf "0x%064s" "$timestamp" | sed -e 's/ /0/g')
-  result=$(cast call 0x000F3df6D732807Ef1319fB7B8bB8522d0Beac02 "$encodedTimestamp" --rpc-url $RPC_URL || echo "failed")
+  result=$(cast call 0x000F3df6D732807Ef1319fB7B8bB8522d0Beac02 "$encodedTimestamp" --rpc-url $RPC_URL --block $BLOCK_NUMBER || echo "failed")
   echo -e "Beacon Root: $result \n"
 }
 
@@ -33,5 +39,3 @@ test_beacon_root "7FC" # 2044d
 test_beacon_root "3FC" # 1020d
 test_beacon_root "C" # 12d
 test_beacon_root "0"
-
-echo "finished"

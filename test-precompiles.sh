@@ -18,7 +18,7 @@ test_precompile() {
     echo "Testing $name ($address)..."
 
     # Make the call
-    result=$(cast call $address $input --rpc-url $RPC_URL)
+    result=$(cast call $address $input --rpc-url $RPC_URL --block $BLOCK_NUMBER)
 
     # Compare with expected result
     if [ "$result" = "$expected" ]; then
